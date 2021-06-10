@@ -18,16 +18,18 @@ export interface ApiAddr {
 
 @Injectable()
 export class AddressProvider {
-    private urlSapi = `${this.apiProvider.getRandomSapiUrl()}address/balance/`;
-
+    private urlSapi = `${this.apiProvider.getRandomSapiUrl()}address/balance/`;    
+z
     constructor(
         public httpClient: HttpClient,
         public currency: CurrencyProvider,
         public blocks: BlocksProvider,
         public txsProvider: TxsProvider,
-        public apiProvider: ApiProvider) { }
-
-    public getAddressBalance(addrStr?: string): Observable<ApiAddr> {
+        public apiProvider: ApiProvider) { }    
+    
+    public async getAddressBalance(addrStr?: string): Promise<any> {
+        this.urlSapi = await this.apiProvider.getRandomSapiUrl();
+        console.log(this.urlSapi);
         return this.httpClient.get<ApiAddr>(this.urlSapi + addrStr);
     }
 

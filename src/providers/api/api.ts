@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { DefaultProvider } from '../../providers/default/default';
 
 import * as _ from 'lodash';
+import { connectableObservableDescriptor } from 'rxjs/observable/ConnectableObservable';
 
 export interface ChainNetwork {
     chain: string;
@@ -89,8 +90,51 @@ export class ApiProvider {
         return prefix;
     }
 
-    public getRandomSapiUrl() {       
-        return `/v1/`;
+    ping(url, timeout = 2000){
+        return new Promise((resolve, reject) => {
+            const urlRule = new RegExp('(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]');
+            if (!urlRule.test(url)) reject('invalid url');
+            try {
+                fetch(url)
+                    .then(() => resolve(true))
+                    .catch(() => resolve(false));
+                setTimeout(() => {
+                    resolve(false);
+                }, timeout);
+            } catch (e) {
+                reject(e);
+            }
+        });
+    };
+
+    async getRandomSapiUrl() {               
+        var sapis = await this.getEnabledNodes();        
+        return this.getEnabledNode(sapis);
+    }
+
+    async getEnabledNodes() {
+        try {
+            // const localServers = ipcRenderer.sendSync('getSapiServers');
+            // if (localServers) return JSON.parse(ipcRenderer.sendSync('getSapiServers'));
+    
+            const nodes = await this.httpClient.get<any>(`https://sapi.smartcash.cc/v1/smartnode/check/ENABLED`).toPromise<any>();
+            const servers = nodes.map((node) => 'http://' + node.ip.replace(':9678', ':8080'));            
+            //ipcRenderer.send('setSapiServers', JSON.stringify(servers));
+            return servers;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async getEnabledNode(sapis) {
+        var electedSapi = sapis[random.int(0, sapis.length - 1)];
+        const res = await this.ping(electedSapi);
+    
+        if (!res) {
+            return await this.getEnabledNode(sapis);
+        }
+    
+        return electedSapi;
     }
 
     public getUrl(params?: { chain?: string; network?: string }): string {

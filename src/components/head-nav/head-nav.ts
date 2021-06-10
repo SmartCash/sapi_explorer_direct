@@ -86,6 +86,7 @@ export class HeadNavComponent implements OnInit {
     }
 
     private processResponse(response) {
+        
         if (response.addr) {
             return {
                 redirTo: 'address',
@@ -117,6 +118,7 @@ export class HeadNavComponent implements OnInit {
     }
 
     private processAllResponse(response) {
+        console.log(response);
         const resFiltered = _.filter(response, o => {
             return (
                 !_.isString(o) &&

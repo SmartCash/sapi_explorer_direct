@@ -202,7 +202,9 @@ export class TxsProvider {
     }
 
     async getTransactionsPerBlock(blockHash: string) {
-        const url = `${this.apiProvider.getRandomSapiUrl()}blockchain/block/${blockHash}`;
+        let urlSapi = await this.apiProvider.getRandomSapiUrl();        
+        const url = urlSapi + '/v1/blockchain/block/' + blockHash;
+        
         let block: AppBlock;
         let txs: ApiTx[] = [];
 

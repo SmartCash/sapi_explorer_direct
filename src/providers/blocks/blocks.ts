@@ -58,22 +58,29 @@ export interface AppBlock {
 export class BlocksProvider {
     public chainNetworkTipValues;
     public currentChainNetwork;
-    public tipValue;
-    private urlSapi = `${this.apiProvider.getRandomSapiUrl()}blockchain`;
+    public tipValue;    
+    private urlSapi: Observable<string>;
     private urlExplorer = `https://explorer.smartcash.cc/api/blocks`;
 
     constructor(
         public httpClient: HttpClient,
         public currency: CurrencyProvider,
         private apiProvider: ApiProvider
-    ) { }
+    ) {
+
+        from(this.apiProvider.getRandomSapiUrl()).subscribe(data => {
+            this.urlSapi = data;
+            console.log(this.urlSapi);
+        });
+        
+     }
 
     public getBlocks(): Observable<AppBlock[]> {
         return from(this.getAllBlocks());
     }
 
-    public async getAllBlocks() {
-        return await this.httpClient.get<any>(this.urlSapi + `/blocks/latest/`).toPromise<any>();
+    public async getAllBlocks() {        
+        return this.httpClient.get<any>(this.urlSapi + `/blocks/latest/`).toPromise<any>();
     }
 
     public pageBlocks(): Observable<AppBlock[]> {

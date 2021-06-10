@@ -39,31 +39,27 @@ export class AddressPage {
         this.priceProvider.setCurrency();
     }
 
-    public ionViewWillLoad(): void {
+    public async ionViewWillLoad() {
         this.events.subscribe('CoinList', (d: any) => {
             this.nroTransactions = d.length;
         });
 
-        this.addrProvider
-            .getAddressBalance(this.addrStr)
-            .subscribe(
-                data => {
-                    this.address = {
-                        balance: data.balance || 0,
-                        sent: data.sent || 0,
-                        received: data.received || 0,
-                        confirmed: data.confirmed || 0,
-                        unconfirmed: data.unconfirmed,
-                        addrStr: this.addrStr
-                    };
-                    this.loading = false;
-                },
-                err => {
-                    this.errorMessage = err;
-                    
-                    this.loading = false;
-                }
-            );
+        try {
+           const data = await this.addrProvider.getAddressBalance(this.addrStr)
+                        
+            this.address = {
+                balance: data.balance || 0,
+                sent: data.sent || 0,
+                received: data.received || 0,
+                confirmed: data.confirmed || 0,
+                unconfirmed: data.unconfirmed,
+                addrStr: this.addrStr
+            };
+            this.loading = false;          
+        } catch (error) {
+            this.loading = false;
+        }
+                              
         this.addrProvider
             .getAddressReward(this.addrStr)
             .subscribe(
