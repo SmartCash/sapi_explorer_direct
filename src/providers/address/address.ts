@@ -6,7 +6,7 @@ import { CurrencyProvider } from '../../providers/currency/currency';
 import { BlocksProvider } from '../blocks/blocks';
 import { TxsProvider } from '../transactions/transactions';
 import { fromPromise } from 'rxjs/observable/fromPromise';
-
+import { from } from 'rxjs/observable/from';
 
 export interface ApiAddr {
     received: number;
@@ -18,8 +18,6 @@ export interface ApiAddr {
 
 @Injectable()
 export class AddressProvider {
-    private urlSapi = `${this.apiProvider.getRandomSapiUrl()}address/balance/`;    
-z
     constructor(
         public httpClient: HttpClient,
         public currency: CurrencyProvider,
@@ -28,13 +26,15 @@ z
         public apiProvider: ApiProvider) { }    
     
     public async getAddressBalance(addrStr?: string): Promise<any> {
-        this.urlSapi = await this.apiProvider.getRandomSapiUrl();
-        console.log(this.urlSapi);
-        return this.httpClient.get<ApiAddr>(this.urlSapi + addrStr);
+        return this.httpClient.get<ApiAddr>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/balance/' + addrStr).toPromise<ApiAddr>();
     }
 
     public getAddressReward(addrStr?: string): Observable<any> {
-        return this.httpClient.get<any>(`${this.apiProvider.getRandomSapiUrl()}smartrewards/check/${addrStr}`);
+        return from(this.getAddressRewardAsync(addrStr));
+    }
+
+    public async getAddressRewardAsync(addrStr) {        
+        return this.httpClient.get<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/smartrewards/check/' + addrStr).toPromise<any>();
     }
 
     public getAddressActivity(addrStr?: string): Observable<any> {

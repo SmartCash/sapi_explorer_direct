@@ -234,15 +234,16 @@ export class TxsProvider {
     }
 
     async getTransactionsPerAddressNew(address: string) {
-        const url =  `${this.apiProvider.getRandomSapiUrl()}address/transactions`;
         let txs: ApiTx[] = [];
-
-        let addressData: any = await this.httpClient.post<any>(url, {
+console.log(address);
+        let addressData: any =
+        this.httpClient.post<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/transactions/', 
+         {
             "pageNumber": 1,
             "pageSize": 10,
             "ascending": false,
             "address": address
-            }).toPromise();
+        }).toPromise();       
 
         addressData.data.forEach(item => {
             this.getMappedTxs(item).then(data => txs.push(data.tx));
@@ -298,13 +299,14 @@ export class TxsProvider {
     }
 
     public async getUnmappedTxByAddress(addrStr: string) {
-        const url = `${this.apiProvider.getRandomSapiUrl()}address/transactions/${addrStr}`;
-        return this.httpClient.get<any>(url).toPromise();
+    //     const url = `${this.apiProvider.getRandomSapiUrl()}address/transactions/${addrStr}`;
+    //     return this.httpClient.get<any>(url).toPromise();
+        return this.httpClient.get<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/transactions/' + addrStr).toPromise();
+   
     }
 
-    public async getUnmappedTx(hash: string) {
-        const url = `${this.apiProvider.getRandomSapiUrl()}transaction/check/${hash}`;
-        return this.httpClient.get<any>(url).toPromise();
+    public async getUnmappedTx(hash: string) {        
+        return this.httpClient.get<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/transaction/check/' + hash).toPromise();
     }
 
     public mapToCoin(tx: any) {

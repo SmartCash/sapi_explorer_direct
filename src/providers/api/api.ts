@@ -6,6 +6,7 @@ import { DefaultProvider } from '../../providers/default/default';
 
 import * as _ from 'lodash';
 import { connectableObservableDescriptor } from 'rxjs/observable/ConnectableObservable';
+import { concatStatic } from 'rxjs/operator/concat';
 
 export interface ChainNetwork {
     chain: string;
@@ -108,7 +109,7 @@ export class ApiProvider {
     };
 
     async getRandomSapiUrl() {               
-        var sapis = await this.getEnabledNodes();        
+        var sapis = await this.getEnabledNodes();   
         return this.getEnabledNode(sapis);
     }
 
@@ -129,11 +130,11 @@ export class ApiProvider {
     async getEnabledNode(sapis) {
         var electedSapi = sapis[random.int(0, sapis.length - 1)];
         const res = await this.ping(electedSapi);
+        console.log(res);
     
         if (!res) {
             return await this.getEnabledNode(sapis);
         }
-    
         return electedSapi;
     }
 

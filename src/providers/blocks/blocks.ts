@@ -59,28 +59,26 @@ export class BlocksProvider {
     public chainNetworkTipValues;
     public currentChainNetwork;
     public tipValue;    
-    private urlSapi: Observable<string>;
+    private urlSapi: string;
     private urlExplorer = `https://explorer.smartcash.cc/api/blocks`;
 
     constructor(
         public httpClient: HttpClient,
         public currency: CurrencyProvider,
         private apiProvider: ApiProvider
-    ) {
-
-        from(this.apiProvider.getRandomSapiUrl()).subscribe(data => {
-            this.urlSapi = data;
-            console.log(this.urlSapi);
-        });
-        
+    ) {        
      }
+
+    ngOnInit() {
+        
+    }
 
     public getBlocks(): Observable<AppBlock[]> {
         return from(this.getAllBlocks());
     }
 
     public async getAllBlocks() {        
-        return this.httpClient.get<any>(this.urlSapi + `/blocks/latest/`).toPromise<any>();
+        return this.httpClient.get<any>(await this.apiProvider.getRandomSapiUrl() + `/v1/blockchain/blocks/latest/`).toPromise<any>();
     }
 
     public pageBlocks(): Observable<AppBlock[]> {
@@ -88,7 +86,10 @@ export class BlocksProvider {
     }
 
     public getBlock(hash: string): Observable<AppBlock> {
-        const url = this.urlSapi + "/block/" + hash;
-        return this.httpClient.get<AppBlock>(url);
+        return from(this.getUniqueBlock(hash));
+    }
+
+    public async getUniqueBlock(hash) {        
+        return this.httpClient.get<any>(await this.apiProvider.getRandomSapiUrl() + `/v1/blockchain/block/` + hash).toPromise<any>();
     }
 }
