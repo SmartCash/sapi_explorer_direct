@@ -130,7 +130,6 @@ export class ApiProvider {
     async getEnabledNode(sapis) {
         var electedSapi = sapis[random.int(0, sapis.length - 1)];
         const res = await this.ping(electedSapi);
-        console.log(res);
     
         if (!res) {
             return await this.getEnabledNode(sapis);

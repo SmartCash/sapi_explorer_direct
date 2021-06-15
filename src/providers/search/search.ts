@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiProvider, ChainNetwork } from '../api/api';
+import { from } from 'rxjs/observable/from';
 
 @Injectable()
 export class SearchProvider {
@@ -59,18 +60,28 @@ export class SearchProvider {
         return Observable.of({ isValid: true, type: 'all' });
     }
 
-    private searchBlock(block: string): Observable<{ block: any }> {
-        const url = this.urlSapi + "/block/" + block;
-        return this.httpClient.get<{ block: any }>(url).pipe(map(res => ({ block: res })));
+    private searchBlock(block: string): Observable<{ block: any }> {        
+       return from(this.searchBlockAsync(block));
     }
+
+    public async searchBlockAsync(block): Promise<any>{
+        return this.httpClient.get<{ block: any }>(await this.apiProvider.getRandomSapiUrl() + '/v1/block/' + block).pipe(map(res => ({ block: res })));
+    }
+
     private searchTx(txid: string): Observable<{ tx: any }> {
-        const url = `${this.apiProvider.getRandomSapiUrl()}transaction/check/${txid}`;
-        return this.httpClient.get<{ tx: any }>(url).pipe(map(res => ({ tx: res })));
+        return from(this.searchTxAsync(txid));
+    }
+
+    public async searchTxAsync(txid): Promise<any>{
+        return this.httpClient.get<{ tx: any }>(await this.apiProvider.getRandomSapiUrl() + '/v1/transaction/check/' + txid).pipe(map(res => ({ tx: res })));
     }
 
     private searchAddr(addr: string): Observable<{ addr: any }> {
-        const url = `${this.apiProvider.getRandomSapiUrl()}address/balance/${addr}`;
-        return this.httpClient.get<{ addr: any }>(url).pipe(map(res => ({ addr: res })));
+        return from(this.searchAddrAsync(addr));
+    }
+
+    public async searchAddrAsync(addr): Promise<any>{
+        return this.httpClient.get<{ addr: any }>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/balance/' + addr).pipe(map(res => ({ addr: res })));
     }
 
     // private extractAddress(address: string): string {
