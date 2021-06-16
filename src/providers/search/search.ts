@@ -60,28 +60,28 @@ export class SearchProvider {
         return Observable.of({ isValid: true, type: 'all' });
     }
 
-    private searchBlock(block: string): Observable<{ block: any }> {        
+    private searchBlock(block: string): Observable<any> {        
        return from(this.searchBlockAsync(block));
     }
 
     public async searchBlockAsync(block): Promise<any>{
-        return this.httpClient.get<{ block: any }>(await this.apiProvider.getRandomSapiUrl() + '/v1/block/' + block).pipe(map(res => ({ block: res })));
+        return this.httpClient.get<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/blockchain/block/' + block).toPromise();
     }
 
-    private searchTx(txid: string): Observable<{ tx: any }> {
+    private searchTx(txid: string): Observable<any> {
         return from(this.searchTxAsync(txid));
     }
 
     public async searchTxAsync(txid): Promise<any>{
-        return this.httpClient.get<{ tx: any }>(await this.apiProvider.getRandomSapiUrl() + '/v1/transaction/check/' + txid).pipe(map(res => ({ tx: res })));
+        return this.httpClient.get<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/transaction/check/' + txid).toPromise();
     }
 
-    private searchAddr(addr: string): Observable<{ addr: any }> {
+    private searchAddr(addr: string): Observable<any> {
         return from(this.searchAddrAsync(addr));
     }
 
     public async searchAddrAsync(addr): Promise<any>{
-        return this.httpClient.get<{ addr: any }>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/balance/' + addr).pipe(map(res => ({ addr: res })));
+        return this.httpClient.get<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/balance/' + addr).toPromise();
     }
 
     // private extractAddress(address: string): string {

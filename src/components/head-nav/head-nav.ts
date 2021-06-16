@@ -61,8 +61,6 @@ export class HeadNavComponent implements OnInit {
     }
 
     public search(): void {
-        //this.q = this.q.replace(/\s/g, '');
-
         this.searchProvider
             .isInputValid(this.q)
             .subscribe(inputDetails => {
@@ -117,15 +115,14 @@ export class HeadNavComponent implements OnInit {
         }
     }
 
-    private processAllResponse(response) {
-        console.log(response);
+    private processAllResponse(response) {        
         const resFiltered = _.filter(response, o => {
             return (
                 !_.isString(o) &&
                 !(
                     (o.addr && o.addr.length === 0) ||
-                    (o.block && o.block.length === 0) ||
-                    (o.tx && o.tx.length === 0)
+                    (o.hash && o.hash.length === 0) ||
+                    (o.txid && o.txid.length === 0)
                 )
             );
         });
@@ -138,7 +135,18 @@ export class HeadNavComponent implements OnInit {
             };
 
             resFiltered.map(res => {
-                res.block ? matches.blocks.push(res.block) : res.tx ? matches.txs.push(res.tx) : matches.addresses.push(res.addr);
+                console.log(res);
+                if(res.hash){
+                    matches.blocks.push(res) 
+                }                    
+                
+                if(res.txid){
+                    matches.txs.push(res)
+                }                    
+                
+                if(res.addr){
+                    matches.addresses.push(res.addr);
+                }                    
             });
 
             // ETH addresses doesn't have 'address' property

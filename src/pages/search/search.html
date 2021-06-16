@@ -6,7 +6,7 @@
             <ion-col col-12>
                 <h2 class="content-container--heading">Blocks:</h2>
             </ion-col>
-            <ion-col col-md-6 col-12 class="page-content" *ngFor="let block of matches?.blocks"
+            <ion-col col-12 class="page-content" *ngFor="let block of matches?.blocks"
                 (click)="goToBlock(block)">
                 <div ion-item no-lines>
                     <div ion-text color="primary">
@@ -20,7 +20,7 @@
             <ion-col col-12>
                 <h2 class="content-container--heading">Transactions:</h2>
             </ion-col>
-            <ion-col col-md-6 col-12 class="page-content" *ngFor="let tx of matches?.txs" (click)="goToTx(tx)">
+            <ion-col col-12 class="page-content" *ngFor="let tx of matches?.txs" (click)="goToTx(tx)">
 
                 <div ion-item no-lines>
                     <div ion-text color="primary">
