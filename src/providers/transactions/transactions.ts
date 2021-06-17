@@ -235,21 +235,30 @@ export class TxsProvider {
 
     async getTransactionsPerAddressNew(address: string) {
         let txs: ApiTx[] = [];
-console.log(address);
-        let addressData: any =
-        this.httpClient.post<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/transactions/', 
+        let addressData: any;
+        await this.httpClient.post<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/transactions/', 
          {
             "pageNumber": 1,
             "pageSize": 10,
             "ascending": false,
             "address": address
-        }).toPromise();       
+        }).toPromise().then(data => addressData = data);
 
         addressData.data.forEach(item => {
             this.getMappedTxs(item).then(data => txs.push(data.tx));
         });
 
         return txs;
+    }
+
+    public async getTxAsync(address): Promise<any>{
+        return this.httpClient.post<any>(await this.apiProvider.getRandomSapiUrl() + '/v1/address/transactions/', 
+        {
+           "pageNumber": 1,
+           "pageSize": 10,
+           "ascending": false,
+           "address": address
+       }).toPromise()
     }
 
     public getTxs(chainNetwork: ChainNetwork, args?: { blockHash?: string }): Observable<ApiUtxoCoinTx[]> {

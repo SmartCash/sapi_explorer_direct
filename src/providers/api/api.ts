@@ -115,12 +115,15 @@ export class ApiProvider {
 
     async getEnabledNodes() {
         try {
-            // const localServers = ipcRenderer.sendSync('getSapiServers');
-            // if (localServers) return JSON.parse(ipcRenderer.sendSync('getSapiServers'));
+            const localServers = localStorage.getItem('sapiServers');
+            if (localServers){
+                console.log(JSON.parse(localStorage.getItem('sapiServers')));
+                return JSON.parse(localStorage.getItem('sapiServers'));
+            }
     
             const nodes = await this.httpClient.get<any>(`https://sapi.smartcash.cc/v1/smartnode/check/ENABLED`).toPromise<any>();
             const servers = nodes.map((node) => 'http://' + node.ip.replace(':9678', ':8080'));            
-            //ipcRenderer.send('setSapiServers', JSON.stringify(servers));
+            localStorage.setItem('sapiServers', JSON.stringify(servers));
             return servers;
         } catch (err) {
             console.error(err);

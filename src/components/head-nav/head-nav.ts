@@ -120,7 +120,7 @@ export class HeadNavComponent implements OnInit {
             return (
                 !_.isString(o) &&
                 !(
-                    (o.addr && o.addr.length === 0) ||
+                    (o.address && o.address.length === 0) ||
                     (o.hash && o.hash.length === 0) ||
                     (o.txid && o.txid.length === 0)
                 )
@@ -135,7 +135,6 @@ export class HeadNavComponent implements OnInit {
             };
 
             resFiltered.map(res => {
-                console.log(res);
                 if(res.hash){
                     matches.blocks.push(res) 
                 }                    
@@ -144,8 +143,8 @@ export class HeadNavComponent implements OnInit {
                     matches.txs.push(res)
                 }                    
                 
-                if(res.addr){
-                    matches.addresses.push(res.addr);
+                if(res.address){
+                    matches.addresses.push(res);
                 }                    
             });
 
