@@ -117,7 +117,6 @@ export class ApiProvider {
         try {
             const localServers = localStorage.getItem('sapiServers');
             if (localServers){
-                console.log(JSON.parse(localStorage.getItem('sapiServers')));
                 return JSON.parse(localStorage.getItem('sapiServers'));
             }
     
