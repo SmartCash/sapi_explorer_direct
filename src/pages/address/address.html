@@ -54,6 +54,48 @@
                                         {{ address.balance.locked }} {{ currencyProvider.currencySymbol }}
                                     </ion-note>
                                 </ion-item>
+                              <ion-item>
+                                    Locked Balance 0 - 1 years
+                                    <ion-note item-end>
+                                        {{ address.balance["locked 0 - 1 years"] }} {{ currencyProvider.currencySymbol }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    Locked Balance 1+ - 2 years
+                                    <ion-note item-end>
+                                        {{ address.balance["locked 1+ - 2 years"] }} {{ currencyProvider.currencySymbol }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    Locked Balance 2+ - 5 years
+                                    <ion-note item-end>
+                                        {{ address.balance["locked 2+ - 5 years"] }} {{ currencyProvider.currencySymbol }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    Locked Balance 5+ - 10 years
+                                    <ion-note item-end>
+                                        {{ address.balance["locked 5+ - 10 years"] }} {{ currencyProvider.currencySymbol }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    Locked Balance 15+ - 100 years
+                                    <ion-note item-end>
+                                        {{ address.balance["locked 15+ - 100 years"] }} {{ currencyProvider.currencySymbol }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    Locked Balance 100+ - 199 years
+                                    <ion-note item-end>
+                                        {{ address.balance["locked 100+ - 199 years"] }} {{ currencyProvider.currencySymbol }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    Locked Balance 199+ years
+                                    <ion-note item-end>
+                                        {{ address.balance["locked 199+ years"] }} {{ currencyProvider.currencySymbol }}
+                                    </ion-note>
+                                </ion-item>
                                 <ion-item>
                                     Free Balance
                                     <ion-note item-end>
@@ -89,11 +131,7 @@
                 <error class="error-message" message="{{errorMessage}}" *ngIf="errorMessage"></error>
                 <div class="error-warning" *ngIf="errorMessage">
                     <ul>
-                        <li>1) If you are using Coinomi. Double check if it is not a new address.</li>
-                        <li>2) Coinomi creates 1 NEW address after each transaction</li>
-                        <li>3) That is not your REWARDs address!</li>
-                        <li>4) Go to receive tab and click on Previous addresses</li>
-                        <li>5) Find the right address</li>
+                        <li>This is a new address.  Check previous addresses on receive history to find deposits.</li>
                     </ul>
 
                 </div>

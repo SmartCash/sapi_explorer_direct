@@ -91,9 +91,9 @@ export class ApiProvider {
 
     public getRandomSapiUrl() {
         const sapis = [
-            `seed2.smarts.cash:8080`,
-            `seed1.smarts.cash:8080`,
-            `seed.smarts.cash:8080`,
+            `seed4.smarts.cash:8080`,
+            `seed4.smarts.cash:8080`,
+            `seed4.smarts.cash:8080`,
         ];
         if (window.location.protocol === 'http:') {
             let electedSapi = sapis[random.int(0, sapis.length - 1)];
