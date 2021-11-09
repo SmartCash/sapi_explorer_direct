@@ -295,7 +295,7 @@ export class TxsProvider {
     }
 
     public async getUnmappedTxByAddress(addrStr: string) {
-        const url = `${this.apiProvider.getRandomSapiUrl()}address/transaction/${addrStr}`;
+        const url = `${this.apiProvider.getRandomSapiUrl()}address/transactions/${addrStr}`;
         return this.httpClient.get<any>(url).toPromise();
     }
 
