@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://sapi.smartcash.cc/v1/"
+      "url": "http://explorer.smarts.cash/v1/"
     }
   ],
   "paths": {

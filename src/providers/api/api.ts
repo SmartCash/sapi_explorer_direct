@@ -100,7 +100,7 @@ export class ApiProvider {
             let prefix = `http://${electedSapi}/v1/`;
             return prefix;
         }
-        return `https://sapi.smartcash.cc/v1/`;
+        return `https://explorer.smarts.cash/v1/`;
     }
 
     public getUrl(params?: { chain?: string; network?: string }): string {
